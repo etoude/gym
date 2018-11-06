@@ -1,0 +1,230 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>主页</title>
+		<link href="__CSS__/style.css" rel="stylesheet" type="text/css"  media="all" />
+		<!--<link href='https://fonts.googleapis.com/css?family=PT+Sans+Narrow' rel='stylesheet' type='text/css'>-->
+		<link rel="stylesheet" href="__CSS__/responsiveslides.css">
+		<script src="__JS__/jquery-3.3.1.js"></script>
+		<!--<script src="static/js/jquery-1.4.2.min.js"</script>-->
+		<!--<script src="static/js/responsiveslides.min.js"></script>-->
+		<script type="text/javascript">
+			$(document).ready(function() {
+				//返回顶部
+				$(".scroll").click(function(event){		
+					event.preventDefault();
+					$('html,body').animate({scrollTop:$(this.hash).offset().top},1200);
+				});
+				
+				var slider_count=4;
+				$(".slider_p_div").hide();
+				$("#slider_p0").show();
+				$(".hi_btn").hide();
+				$("#hi_btn0").show();
+				$(".img_hover").animate({bottom:'10px'});
+				var slider_i=1;
+				var m_over=true;
+				
+				function zx_slider(){
+					if(m_over){
+						if(slider_i<0){slider_i=slider_count;}
+						//p
+						$(".slider_p_div").hide();
+						$("#slider_p"+slider_i).show();
+						//p end
+						//hi_btn
+						$(".hi_btn").hide();
+						$("#hi_btn"+slider_i).show();
+						//hi_btn end
+						//btn
+						$(".btnbox img").stop(true,true);
+						$(".btnbox img").removeClass("img_hover");
+						$(".btnbox img").animate({bottom:'0px'},200);
+						$("#btn_img"+slider_i).addClass("img_hover");
+						$("#btn_img"+slider_i).animate({bottom:'10px'},200);
+						//btn end
+						$(".imgbox").stop();
+						$(".imgbox").animate({left:'-750'*slider_i+'px'});
+						if(slider_i<slider_count){
+							slider_i++;	
+						}else{
+							slider_i=0;
+						}
+					}
+				}
+				
+				$(".lbtn").click(function(){
+					m_over=true;
+					if(slider_i==0){slider_i=slider_count-1}else{slider_i=slider_i-2;}
+					zx_slider();
+					m_over=false;
+				});
+				
+				$(".rbtn").click(function(){
+					m_over=true;
+					zx_slider();
+					m_over=false;
+				});
+				
+				$(".ov_btn").mouseover(function(){
+					var btn_i=$(".ov_btn").index(this);
+					if(slider_i-1!=btn_i){
+						m_over=true;
+						slider_i=btn_i;
+						zx_slider();
+						m_over=false;
+					}
+				});
+				
+				zx_timer=setInterval(zx_slider,4000); 
+				$("div.zx_slider").mouseover(function(){
+					m_over=false;
+				});
+				$("div.zx_slider").mouseout(function(){
+					m_over=true;
+				});
+			});
+			
+		</script>
+	</head>
+	<body>
+		<!--标题栏-->
+		<div class="header" id="top">
+			<div class="wrap">
+				<!--健身logo-->
+				<div class="logo">
+					<img src="__IMAGES__/jianshenLogo.jpg" title="logo" class="pic"/>
+				</div>
+				<!--菜单-->
+				<div class="top-nav">
+					<ul>
+						<li class="active"><a href="index">主页</a></li>
+						<li><a href="about">常识</a></li>
+						<li><a href="equipment">器械</a></li>
+						<li><a href="action">动作</a></li>
+						<li><a href="login">登录</a></li>
+					</ul>
+				</div>	
+				
+				<div class="clear"> </div>
+			</div>
+		</div>
+		
+<!--		<div>-->
+			<!--健身图片-->
+	<!--		<img src="__IMAGES__/slider1.jpg" alt="">-->
+<!--		</div>-->
+		
+		<div class="image-slider">
+			<div class="zx_slider" style="float: left;">
+				<div class="imgbox">
+				   	<img alt="Danx" src="__IMG__/pic5.jpg" width="750" height="310" /> 
+				   	<img alt="Danx" src="__IMG__/pic2.jpg" width="750" height="310" /> 
+				   	<img alt="Danx" src="__IMG__/pic1.jpg" width="750" height="310" />
+				   	<img alt="Danx" src="__IMG__/pic4.jpg" width="750" height="310" />
+				   	<img alt="Danx" src="__IMG__/pic3.jpg" width="750" height="310" />
+				</div>
+					
+				<div class="png"></div>
+				<a href="#" id="hi_btn0" class="hi_btn"></a> 
+				<a href="#" id="hi_btn1" class="hi_btn"></a> 
+				<a href="#" id="hi_btn2" class="hi_btn"></a> 
+				<a href="#" id="hi_btn3" class="hi_btn"></a> 
+				<a href="#" id="hi_btn4" class="hi_btn"></a>
+					
+				<div class="btnbox"> 
+				    <a  class="ov_btn">
+					   	<img alt="Danx" id="btn_img0" class="thumb img_hover" src="__IMG__/pic5.jpg" />
+					</a> 
+					<a  class="ov_btn">
+						<img alt="Danx" id="btn_img1" class="thumb" src="__IMG__/pic2.jpg" />
+					</a>
+					<a  class="ov_btn">
+					    <img alt="Danx" id="btn_img2" class="thumb" src="__IMG__/pic1.jpg" />
+					</a> 
+					<a  class="ov_btn">
+					 	<img alt="Danx" id="btn_img3" class="thumb" src="__IMG__/pic4.jpg" />
+					</a> 
+					<a  class="ov_btn">
+						<img alt="Danx" id="btn_img4" class="thumb" src="__IMG__/pic3.jpg" />
+					</a> 
+				</div>
+				<div class="lbtn"></div>
+				<div class="rbtn"></div>
+				<div class="slider_p">
+					<div id="slider_p0" class="slider_p_div">
+					    <h3>娱乐健身区</h3>
+					    <p>最先提出以娱乐为主题的健身房，提高健身乐趣，让顾客开心快乐地完成训练任务，在不知不觉中完成训练目的。 </p>
+					</div>
+					
+				    <div id="slider_p1" class="slider_p_div">
+				        <h3>学习健身区</h3>
+				        <p>十八般专为这种想不断提高自己又没有时间的顾客设计了学习健身设备，让顾客一边健身，一边学习，身体、头脑共同进步。</p>
+				    </div>
+				    
+				    <div id="slider_p2" class="slider_p_div">
+				        <h3>传统健身区</h3>
+				        <p>喜新不厌旧，力量训练还得认真推铁，传统健身区以力量型大器械训练为主，通过健身APP,健身视频，帮助顾客有针对性地进行训练。</p>
+					</div>
+					
+				    <div id="slider_p3" class="slider_p_div">
+				        <h3>休息区</h3>
+				        <p>该健身房提供在提供舒适健身环境的同时还提供了休息区，当你运动完累了的时候，可在该区域喝点水吃点东西补充能量。</p>
+				    </div>
+				    
+				    <div id="slider_p4" class="slider_p_div">
+           				<h3>购物区</h3>
+           				<p>该区域提供各种健身装备的售卖，提供蛋白粉，以及各种健身饮料的售卖。</p>
+       				</div>
+				</div>
+			</div>
+			<div class="look">
+				<img src="__IMG__/js2.jpg"/>
+			</div>
+			<div class="clear"> </div>
+		</div>
+		
+		<div class="wrap">
+			<div class="content">
+				<!---start-grids----->
+				<div class="grids">
+					 <div class="grid">
+					 	<h3>Exercise</h3>
+					 	<img src="__IMAGES__/qx1.jpg"  title="Buliding" />
+					 	<p>负重深蹲是一种体育锻炼方式，深蹲的标准，腰背保持直线，髋关节低于膝关节。不正确的技术动作反而会使膝关节受损.</p>
+					 	<a class="button" href="https://baike.so.com/doc/4945844-5166941.html">Read More</a>
+					 </div>
+					 
+					 <div class="grid">
+					 	<h3>Exercise</h3>
+					 	<img src="__IMAGES__/qx2.jpg"  title="Buliding" />
+					 	<p>哑铃飞鸟动作对胸大肌的厚度和线条有着非常显著的锻炼效果，是广大健美爱好者锻炼胸肌最喜欢的动作之一。</p>
+					 	<a class="button" href="https://baike.so.com/doc/6726870-6941139.html">Read More</a>
+					 </div>
+					 
+					 <div class="grid">
+					 	<h3>Exercise</h3>
+					 	<img src="__IMAGES__/qx3.jpg"  title="Buliding" />
+					 	<p>弹力带可以绕一圈固定在手上练习，还可以打结成圆圈状，套在肢体上进行各种练习。
+					 		弹力带也适合与其他训练设备一起练习。</p>
+					 	<a class="button" href="https://jingyan.baidu.com/article/3ea51489ddf3c352e61bba01.html">Read More</a>
+					 </div>
+					 
+					 <div class="grid last-grid">
+					 	<h3>Exercise</h3>
+					 	<img src="__IMAGES__/qx4.jpg"  title="Buliding" />
+					 	<p>弯举的作用 弯举这一动作主要用来锻炼肱肌和肱二头肌，效果明显。可以用哑铃来做，也可以用杠铃，当杠铃弯起时，上臂不准移动 。</p>
+					 	<a class="button" href="https://baike.so.com/doc/6290729-6504226.html">Read More</a>
+					 </div>
+					 <!--<div class="clear"> </div>-->
+				</div>
+			</div>
+		</div>
+		
+	<div class="clear"></div>
+	<div class="top-link">
+		<a href="#top" class="scroll">Click to Top</a>
+	</div>
+	</body>
+</html>

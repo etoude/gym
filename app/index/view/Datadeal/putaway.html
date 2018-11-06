@@ -1,0 +1,121 @@
+//商品上架
+{extend name="common/adminbase"}
+
+{block name="link"}
+	<link rel="stylesheet" type="text/css" href="__CSS__/out.css" />
+	<link rel="stylesheet" type="text/css" href="__CSS__/sendpic.css" />
+{/block}
+
+{block name="content"}
+	<div class="out" style="background-image: url(__IMG__/beij.jpg);">
+		<div class="sendpic">
+			<div class="layui-upload sendp">
+			    <input type="button" name="mypic" class="layui-btn" id="test1" value="上传商品图片"/>
+			    <div class="layui-upload-list">
+				    <img class="layui-upload-img" id="demo1" src="__IMG__/spic.jpg">
+				    <p id="demoText"></p>
+				</div>
+			</div>   
+			<div class="data">
+				<div style="text-align: center;font-size: 20px;;"><span>商品信息</span></div>				
+				<div><input type="text" placeholder="输入商品名称" class="comname"/></div>
+				<div><input type="text" placeholder="输入商品价格" class="comprice"/></div>
+				<div><input type="text" placeholder="输入商品库存" class="comrep"/></div>
+				<div><input type="text" placeholder="输入商品描述" class="comdesc"/></div>
+				<div><input type="text" placeholder="输入商品分类" class="comclass"/></div>
+				<div>
+					<span class="span">商品状态：</span>
+					<select id="status">
+						<option>保存</option>
+						<option>发布</option>
+					</select>
+					<button id="commit">提交</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<script src="__JS__/jquery.min.js"></script>
+    <script src="__LAYUI__/layui.js"></script>
+	<script>
+		layui.use('upload', function(){
+		  var upload = layui.upload;
+			//普通图片上传
+		  var uploadInst = upload.render({
+		    elem: '#test1',
+		    url: 'sendpic',
+		    before: function(obj){
+			//预读本地文件示例，不支持ie8
+			    obj.preview(function(index, file, result){
+			//图片链接（base64）
+			        $('#demo1').attr('src', result); 
+			      });
+		    },
+		    done: function(res){
+			//如果上传失败
+		      if(res.code > 0){
+		        return layer.msg('上传失败');
+		      }
+			//上传成功
+		    },
+		    error: function(){
+			//演示失败状态，并实现重传
+		      var demoText = $('#demoText');
+		      demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+		      demoText.find('.demo-reload').on('click', function(){
+		        uploadInst.upload();
+		      });
+		    }
+		  });
+		  
+		});
+
+	</script>
+	
+	<script type="text/javascript">
+		$(function()
+		{
+			$("#commit").click(function()
+			{
+				var name = $(".comname").val();
+				var price = $(".comprice").val();
+				var rep = $(".comrep").val();
+				var desc = $(".comdesc").val();
+				var classf = $(".comclass").val();
+				var status = $("#status").val();
+				
+				if(name==""||price==""||rep==""||desc==""||name==null||price==null||rep==null||desc==null||classf==""||classf==null)
+				{
+					alert("商品信息不能为空！");
+					return;
+				}else{
+					$.ajax({
+						url:"savecom",
+						type:"POST",
+						data:{name:name,
+							price:price,
+							rep:rep,
+							desc:desc,
+							classf:classf,
+							status:status
+							},
+						success:function(data)
+						{
+							if(data == 1)
+							{
+								alert(status+'成功！');
+								window.location.href = "putaway";
+							}else
+							{
+								alert("上传出错！");
+							}
+						},
+						error:function(){alert("error!")}
+					});
+				}				
+			});
+			
+			
+		});
+	</script>
+{/block}

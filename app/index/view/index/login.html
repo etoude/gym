@@ -1,0 +1,161 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>登录界面</title>
+		<link href="__CSS__/style.css" rel="stylesheet" type="text/css"  media="all" />
+		<link rel="stylesheet" href="__CSS__/reset.css" />
+		<!--<link rel="stylesheet" href="__CSS__/common.css" />-->
+		<link rel="stylesheet" href="__CSS__/font-awesome.min.css" />
+		<script src="__JS__/jquery-3.3.1.js"></script>
+		  <script type="text/javascript">
+			$(document).ready(function() {
+				$(".scroll").click(function(event){		
+					event.preventDefault();
+					$('html,body').animate({scrollTop:$(this.hash).offset().top},1200);
+				});
+				
+				$(".login").click(function()
+				{
+					var phone = $(".phone").val();
+					var psw = $(".psw").val();
+					var ident = $('input:radio[name="use"]:checked').val();
+					if(ident == "管理员")
+					{
+						$.ajax({
+							type:"POST",
+							url:"admindata",
+							async:true,
+							data:{id:phone,
+							psw:psw},
+							success:function(data)
+							{
+								if(data == 1)
+									window.location.href="loginadmin";
+								else if(data == 0)
+									alert("输入有误！");
+							},
+							error:function(){alert('error!')}
+						});
+					}else if(ident == "会员")
+					{
+						$.ajax({
+							type:"POST",
+							url:"memberdata",
+							async:true,
+							data:{phone:phone,
+							      psw:psw},
+							success:function(data)
+							{
+								if(data == 1)
+									window.location.href="loginsuccess";
+								else if(data == 0)
+									alert("输入有误！");
+							},
+							error:function(){alert('error!')}
+						});
+					}
+				});
+			});
+		</script>
+		
+		<style type="text/css">
+			.form_text_ipt input[type='radio']{
+				width:20px;
+			}
+			.form_text_ipt label{
+				font-size: 15px;
+				position: relative;
+				top:-10px;
+			}
+		</style> 
+	</head>
+	<body>
+		<div class="header" id="top">
+			<div class="wrap">
+				<div class="logo">
+					<a href="index"><img src="__IMAGES__/jianshenLogo.jpg" title="logo" class="pic"/></a>
+				</div>
+				<div class="top-nav">
+					<ul>
+						<li ><a href="index">主页</a></li>
+						<li><a href="about">常识</a></li>
+						<li><a href="equipment">器械</a></li>
+						<li><a href="action">动作</a></li>
+						<li class="active"><a href="login">登录</a></li>
+					</ul>
+				</div>
+				<div class="clear"> </div>
+			</div>
+		</div>
+		
+		<div class="wrap1">
+			<div class="content">
+				<div class="contact">
+					<div class="section group">											
+				  </div>
+				</div>
+			</div>
+		</div>
+		<div class="clear"> </div>
+		<div class="wrap1 login_wrap">
+			<div class="content">
+				<div class="login_box">	
+					
+					<div class="login_form">
+						<div class="login_title">
+							登录
+						</div>
+						<div>
+							
+							<div class="form_text_ipt">
+								<input name="username" type="text" placeholder="手机号" class="phone">
+							</div>
+							<div class="ececk_warning"><span>手机号不能为空</span></div>
+							<div class="form_text_ipt">
+								<input name="password" type="password" placeholder="密码" class="psw">
+							</div>
+							<div class="ececk_warning"><span>密码不能为空</span></div>
+							<div class="form_text_ipt">
+								<input name="use" type="radio" value="会员" id="member" checked><label for="member">会员</label>
+								<input name="use" type="radio" value="管理员" id="admin"/><label for="admin">管理员</label>
+							</div>
+							<div class="ececk_warning"></div>
+							<div class="form_check_ipt">
+								<div class="left check_left">
+									<label><input name="" type="checkbox"> 下次自动登录</label>
+								</div>
+								<div class="right check_right">
+									<a href="#">忘记密码</a>
+								</div>
+							</div>
+							<div class="form_btn">
+								<button type="button" class="login">登录</button>
+							</div>
+							<div class="form_reg_btn">
+								<span>还没有帐号？</span><a href="register">马上注册</a>
+							</div>
+						</div>
+						
+						<div class="other_login">
+							<div class="left other_left">
+								<span>其它登录方式</span>
+							</div>
+							<div class="right other_right">
+								<a href="#"><i class="fa fa-qq fa-2x"></i></a>
+								<a href="#"><i class="fa fa-weixin fa-2x"></i></a>
+								<a href="#"><i class="fa fa-weibo fa-2x"></i></a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<script type="text/javascript" src="__JS__/common.js" ></script>
+		<div class="clear"> </div>
+		<div class="top-link">
+			<a href="#top" class="scroll">Click to Top</a>
+		</div>
+	</body>
+</html>

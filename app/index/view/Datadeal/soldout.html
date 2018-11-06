@@ -1,0 +1,193 @@
+//商品下架
+{extend name="common/adminbase"}
+		
+{block name="link"}
+	<link rel="stylesheet" type="text/css" href="__CSS__/out.css" />
+	<!--<link rel="stylesheet" type="text/css" href="__CSS__/show.css" />-->
+	<link rel="stylesheet" type="text/css" href="__CSS__/class.css">
+	<link rel="stylesheet" type="text/css" href="__CSS__/soldout.css" />
+{/block}
+
+{block name="content"}
+	<div class="out" style="background-image: url(__IMG__/beij.jpg);">	
+		<div class="init">
+			<table class="table layui-table">
+				<thead>
+					<tr>
+						<td>
+							<input type="checkbox" class="all" />
+							<button class="del">删除</button>
+						</td>
+						<td>商品编号</td>
+						<td>商品名称</td>
+						<td>商品价格</td>
+						<td>商品库存</td>
+						<td>商品销量</td>
+						<td>发布日期</td>
+						<td>商品状态</td>
+						<td>操作</td>
+					</tr>
+				</thead>
+				<tbody>
+					{foreach name='commod' item='vo' key='s'}
+						<tr>
+							<td><input type="checkbox" class="c{$s+1}" name="box"/></td>
+							<td>{$vo.id}</td>
+							<td>{$vo.name}</td>
+							<td>{$vo.price}</td>
+							<td>{$vo.repertory}</td>
+							<td>{$vo.market}</td>
+							<td>{$vo.time}</td>
+							<td>{$vo.status}</td>
+							<td>
+								<button class="b{$s+1} xia">下架</button>
+								<button class="r{$s+1} bian">编辑</button>
+							</td>
+						</tr>
+					{/foreach}
+				</tbody>
+			</table>
+			<div class="setpage" style="margin-top:25px;">{$page}</div>
+		</div>
+		<div class="change">
+			<div><span>商品ID:</span><span class="i0"></span>
+				<img src="__IMG__/no.png" style="width:30px;height:30px;" class="img" />
+			</div>
+			<div><input type="text" placeholder="商品名称" class="i1"/></div>
+			<div><input type="text" placeholder="商品价格" class="i2"/></div>
+			<div><input type="text" placeholder="商品库存" class="i3"/></div>
+			<div><input type="text" placeholder="商品描述" class="i4"/></div>
+			<div>
+				<span>商品状态</span>
+				<select id="status">
+					<option value="保存">保存</option>
+					<option value="发布">发布</option>
+				</select>	
+				<button class="commit">提交</button>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		$(function()
+		{
+			$(".pagination").attr("id","pagination-digg");
+			$(".disabled span").html("");	
+			
+			$(".xia").click(function(){
+				//获取记录条数
+				var num = $('.table tr').length;
+				for(var a=2;a<=num;a++)
+				{
+					if($(this).is(".b"+a))
+					{
+						var id = $(this).parent().parent().find("td").eq(1).html();
+						$.ajax({
+							url:'comnum',
+							type:'POST',
+							data:{id:id},
+							success:function(data)
+							{
+								if(data==1)
+								{
+									alert('删除成功！');
+									window.location.href = 'soldout';
+								}else{
+									alert("删除出错！！");
+								}
+							},
+							error:function(){alert('error!')}
+						});
+					}
+				}
+			});
+			
+			$(".bian").click(function(){
+				//获取记录条数
+				var num = $('.table tr').length;
+				for(var a=1;a<num;a++)
+				{
+					if($(this).is(".r"+a))
+					{	
+						$(".table").css('display','none');
+						$(".setpage").css('display','none');
+						$(".change").css('display','block');
+						var i0=$(this).parent().parent().find("td").eq(1).html();	
+						$(".i0").html(i0);
+						var i1=$(this).parent().parent().find("td").eq(2).html();						
+						$(".i1").val(i1);
+						var i2=$(this).parent().parent().find("td").eq(3).html();	
+						$(".i2").val(i2);
+						var i3=$(this).parent().parent().find("td").eq(4).html();						
+						$(".i3").val(i3);
+						var i4=$(this).parent().parent().find("td").eq(5).html();	
+						$(".i4").val(i4);						
+					}
+				}
+			});
+			
+			$(".commit").click(function(){
+				
+				var arr=[];
+				var ishave=true;
+				arr[0]=$('.i0').html();
+				for(var i=1;i<5;i++)
+				{
+					arr[i] = $(".i"+i).val();
+					if(arr[i]==""||arr[i]==null)
+						ishave = false;				
+				}
+				arr[5]=$("#status").val();
+				if(ishave)
+				{
+					$.ajax({
+						url:'changecom',
+						type:'POST',
+						data:{
+							id:arr[0],
+							name:arr[1],
+							price:arr[2],
+							kc:arr[3],
+							ms:arr[4],
+							status:arr[5]
+								},		
+						success:function(result)
+						{
+							if(result == 1)
+							{
+								alert("修改成功！");	
+								window.location.href = 'soldout';
+							}
+						},
+						error:function(){alert('error!')}
+					});
+				}else{
+					alert("输入不能为空！");
+				}			
+			});
+			
+			$(".img").click(function()
+			{
+				$(".change").css('display','none');
+				$(".table").css('display','block');
+			});
+			
+			
+			$(".all").click(function()
+			{
+				if($(this).is(':checked')){
+					$('input[name="box"]').each(function()
+					{
+						$(this).prop("checked",true);
+					});
+					
+				}else{
+					$('input[name="box"]').each(function()
+					{
+						$(this).removeAttr("checked",false);
+					});
+				}
+			});
+		});
+	</script>
+{/block}

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>index1</title>
+	</head>
+	<body>
+		<h1>{$phone}:{$psw}</h1>
+		<!--<h1>{$email}</h1>
+		<h2>{$user}</h2>-->
+		<!--md5码加密-->
+<!--		<p>{$email}:{$email|md5}</p>-->
+		<!--截取前几位-->
+<!--		<p>{$email}:{$email|substr=0,8}</p>-->
+		
+		<!--substr($email,0,7);
+		md5($email);
+		-->
+		<!--###时间戳-->
+<!--		<h2>{$time}:{$time|date="Y-m-d",###}</h2>-->
+		<!--大写-->
+<!--		<p>{$email}:{$email|md5|strtoupper}</p>-->
+		<!--默认-->
+<!--		<p>{$email|default="666@qq.com"}</p>-->
+		
+		<!--遍历-->
+		<!--{volist name='list' id='data' offset='0' length='2' empty='$empty' key='s'}
+			<p>{$s}:{$data.name}</p>
+		{/volist}
+		-->
+		<!--{foreach list as $vo}
+			<p>{$vo.name}:{$vo.email}</p>
+		{/foreach}-->
+		
+		<!--{foreach name='list' item='vo'}
+			<p>{$vo.name}:{$vo.email}</p>
+		{/foreach}-->
+		<!--key='s'自定义，属于下标-->
+		<!--{foreach name='list' item='vo' key='s'}
+			<p>{$s}:{$vo.name}:{$vo.email}</p>
+		{/foreach}-->
+		
+		<!--for   step步长   若定义name=k,下面就要用$k-->
+		<!--{for start="0" end="5" step="2"}
+			<p>{$i}</p>
+		{/for}-->
+		
+		<!--eq equal-->
+		<!--{eq name='a' value = "10"}
+			<p>相等</p>
+		{else/}
+			<p>不相等</p>	
+		{/eq}-->
+		
+		<!--neq notequal-->
+		<!--{neq name='a' value = "10"}
+			<p>不相等</p>
+		{else/}
+			<p>相等</p>	
+		{/neq}-->
+		
+		
+		<!--gt  比10大正确否则错误-->
+		<!--{gt name='a' value = "10"}
+			<p>正确</p>
+		{else/}
+			<p>错误</p>	
+		{/gt}-->
+		
+		<!--egt  大于等于10正确否则错误-->
+		<!--{egt name='a' value = "10"}
+			<p>正确</p>
+		{else/}
+			<p>错误</p>	
+		{/egt}-->
+		
+		<!--lt  比10小正确否则错误-->
+		<!--{lt name='a' value = "10"}
+			<p>正确</p>
+		{else/}
+			<p>错误</p>	
+		{/lt}-->
+		
+		
+		<!--elt  小于等于10正确否则错误,要使用传过来的要用$-->
+		<!--{elt name='a' value = "$b"}
+			<p>正确</p>
+		{else/}
+			<p>错误</p>	
+		{/elt}-->
+		<!--switch-->
+		<!--{switch name = "Think.get.level"}
+			{case value="1|2"}<p>666</p>{/case}
+			{case value="3"}<p>777</p>{/case}
+			{default /}<p>888</p>
+		{/switch}-->
+		<!--in notin  between-->
+		<!--{range name="Think.get.level" value="1,2,3" type="in"}
+			<p>在里面</p>
+		{else/}
+			<p>不在里面</p>
+		{/range}-->
+		
+		<!--{notin name="Think.get.level" value="1,2,3"}
+			<p>不在里面</p>
+		{else/}
+			<p>在里面</p>
+		{/notin}-->
+		<!--if语句 AND  OR-->
+		<!--{if condition="($Think.get.level == 1) AND (1==1)"}
+			<p>当前值为1</p>
+		{else/}
+			<p>当前值不为1</p>
+		{/if}-->
+	</body>
+</html>

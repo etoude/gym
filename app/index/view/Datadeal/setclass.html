@@ -1,0 +1,248 @@
+//选课
+{extend name="common/adminbase"}
+
+{block name="link"}
+	<link rel="stylesheet" type="text/css" href="__CSS__/dealmember.css">
+	<link rel="stylesheet" type="text/css" href="__CSS__/out.css" />
+	<link rel="stylesheet" type="text/css" href="__CSS__/class.css">
+	<link rel="stylesheet" type="text/css" href="__CSS__/setclass.css">
+{/block}
+
+
+{block name="content"}
+	<div class="out"  style="background-image: url(__IMG__/aback.jpg);">
+		<div class="inner">
+			<div class="top" style="position: relative;top:-30px;">
+				<button class="addm">排课</button>
+				<input type="text" class="seekit" placeholder="请输入教练名字"/>
+				<button class="findit">查询</button>
+			</div>
+			<table class="layui-table table">
+			 	<thead>
+				    <tr>
+				        <td>训练部位</td>
+				        <td>训练价格</td>
+				        <td>训练开始时间</td>
+				        <td>训练结束时间</td>
+				        <td>教练</td>
+						<td>操作</td>
+				    </tr> 
+			    </thead>
+			    <tbody>
+			    	{volist name="class" id="cla" key="s"}
+					    <tr>
+					        <td>{$cla.trainType}</td>
+					        <td>{$cla.price}</td>
+					        <td>{$cla.startTime}</td>
+					        <td>{$cla.endTime}</td>
+					        <td>{$cla.coach}</td>
+					        <td>
+					        	<button class="b{$s+1} zhu">删除</button>
+								<button class="r{$s+1} bian">编辑</button>
+					        </td>
+					    </tr>
+				    {/volist}
+			    </tbody>
+			</table>
+			<div class="setpage" style="margin-top:25px;">{$page}</div>
+			
+			<div class="dialog" >
+				<div class="show">
+					<div><span class="span">修改课表信息</span>
+						<img src="__IMG__/no.png" style="width:30px;height:30px;" class="img" />
+					</div>
+					<div><input type="text" placeholder="训练部位" class="i0"/></div>
+					<div><input type="text" placeholder="训练价格" class="i1"/></div>
+					<div><input type="text" placeholder="训练开始时间" class="i2"/><br /></div>
+					<div><input type="text" placeholder="训练结束时间" class="i3"/></div>
+					<div><input type="text" placeholder="教练" class="i4"/></div>
+			 		<div><button id="commit">提交</button></div>	
+				</div>
+			</div>
+			
+			<div class="dialog1">
+				<div class="show1">
+					<div><span class="span">添加课表信息</span>
+						<img src="__IMG__/no.png" style="width:30px;height:30px;" class="img1" />
+					</div>
+					<div><input type="text" placeholder="训练部位" class="c0"/></div>
+					<div><input type="text" placeholder="训练价格" class="c1"/></div>
+					<div><input type="text" placeholder="训练开始时间" class="c2"/><br /></div>
+					<div><input type="text" placeholder="训练结束时间" class="c3"/></div>
+					<div><input type="text" placeholder="教练" class="c4"/></div>
+			 		<div><button id="commit1">提交</button></div>	
+				</div>
+			</div>
+			
+		</div>
+	</div>
+	<script type="text/javascript">
+			$(function(){
+				$(".pagination").attr("id","pagination-digg");
+				$(".disabled span").html("");
+				
+				$(".findit").click(function(){
+					var val = $(".seekit").val();
+					if(val==null||val=="")
+					{
+						alert("输入不能为空！");
+					}else{
+						window.location.href = 'getC?coach='+val;
+					}						
+				});
+			
+				$(".zhu").click(function(){
+				//获取记录条数
+					var num = $('.table tr').length;
+					for(var a=2;a<=num;a++)
+					{
+						if($(this).is(".b"+a))
+						{
+							var type = $(this).parent().parent().find("td").eq(0).html();
+							$.ajax({
+								url:'dealclass',
+								type:'POST',
+								data:{type:type},
+								success:function(data)
+								{
+									if(data==1)
+									{
+										alert('删除成功！');
+										window.location.href = 'setclass';
+									}else{
+										alert("删除出错！！");
+									}
+								},
+								error:function(){alert('error!')}
+							});
+						}
+					}
+				});
+				
+				$(".bian").click(function(){
+					//获取记录条数
+					var num = $('.table tr').length;
+					for(var a=2;a<=num;a++)
+					{
+						if($(this).is(".r"+a))
+						{	
+							$(".dialog").css('display','block');
+							$(".table").css('display','none');
+							$(".setpage").css('display','none');
+							$(".top").css('display','none');
+							var arr=[];					
+							for(var i=0;i<5;i++)
+								arr[i] = $(this).parent().parent().find("td").eq(i).html();
+							
+							for(var i=0;i<5;i++)
+								$(".i"+i).val(arr[i]);							
+						}
+					}
+				});
+				
+				$("#commit").click(function(){
+					
+					var arr=[];
+					var ishave=true;
+					for(var i=0;i<5;i++)
+					{
+						arr[i] = $(".i"+i).val();
+						if(arr[i]==""||arr[i]==null)
+							ishave = false;
+					}
+					if(ishave)
+					{
+						$.ajax({
+							url:'changeClass',
+							type:'POST',
+							data:{
+								type:arr[0],
+								price:arr[1],
+								start:arr[2],
+								end:arr[3],
+								coach:arr[4]			
+									},		
+							success:function(result)
+							{
+								if(result == 1)
+								{
+									alert("修改成功！");	
+									window.location.href = 'setclass';
+								}
+							},
+							error:function(){alert('error!')}
+						});
+					}else{
+						alert("输入不能为空！");
+					}
+					
+	
+				});
+				
+				$(".img").click(function()
+				{
+					$(".dialog").css('display','none');
+					$(".table").css('display','block');
+					$(".setpage").css('display','block');
+					$(".top").css('display','block');
+				});
+				
+				$(".img1").click(function()
+				{
+					$(".dialog1").css('display','none');
+					$(".table").css('display','block');
+					$(".setpage").css('display','block');
+					$(".top").css('display','block');
+				});
+				
+				$(".addm").click(function(){	
+					$(".dialog1").css('display','block');
+					$(".table").css('display','none');
+					$(".setpage").css('display','none');
+					$(".top").css('display','none');
+				});
+				
+				
+				$("#commit1").click(function(){
+					
+					var arr=[];
+					var ishave=true;
+					for(var i=0;i<5;i++)
+					{
+						arr[i] = $(".c"+i).val();
+						if(arr[i]==""||arr[i]==null)
+							ishave = false;
+					}
+					if(ishave)
+					{
+						$.ajax({
+							url:'setit',
+							type:'POST',
+							data:{
+								type:arr[0],
+								price:arr[1],
+								start:arr[2],
+								end:arr[3],
+								coach:arr[4]		
+									},		
+							success:function(result)
+							{
+								if(result == 1)
+								{
+									alert("添加成功！");	
+									window.location.href = 'setclass';
+								}else{
+									alert("训练部位重复，请重新输入！");
+								}
+							},
+							error:function(){alert('error!')}
+						});	
+					}else{
+						alert("输入不能为空！");
+					}
+					
+				});
+			
+			});
+	</script>
+{/block}

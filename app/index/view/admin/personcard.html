@@ -1,0 +1,61 @@
+//查看会员卡信息
+{extend name="common/memberbase"}
+
+{block name="link"}
+	<link rel="stylesheet" type="text/css" href="__CSS__/personcard.css">
+{/block}
+
+{block name="content"}
+	<div class="personbg" style="background-image: url(__IMG__/person_bg.jpg);">
+		<div class="form">
+		    <h3>会员卡信息</h3>
+			<div><label class='lab'>会员卡号：</label><span class="id">{$id}</span></div>
+			<div><label class='lab'>会员卡类型：</label><span class="type">{$type}</span></div>
+			<div><label class='lab'>会员卡有效期：</label><span class="indate">{$start}到{$end}</span></div>
+			<div><label class='lab'>会员积分：</label><span class="integral">{$integral}</span></div>
+			<div><label class='lab'>账户余额：</label><span class="balance">{$balance}元</span></div>
+			<div><label style="position: relative;left: 50px;"><button id="getcard">申报会员卡</button></label></div>
+			<!--申报会员卡-->
+			<div class="getcard">	
+				<label class='lab'><span>会员卡类型：</span></label>
+				<select name="sel" id="sele">
+					{foreach name='ctype' item='vo' key = 's'}
+						<option value = '{$vo.type}'>{$vo.type}</option>
+					{/foreach}
+				</select>
+				<button class="ok">确定</button>
+			</div>
+		</div>
+	</div>	
+	
+	<script type="text/javascript">
+		//弹框选择办卡类型
+		$(function(){
+			
+			$("#getcard").click(function(){
+				$(".getcard").css('display','block');
+				$("#getcard").css('display','none');
+			});
+			
+			$(".ok").click(function()
+			{
+				var type = $('#sele').val();
+				$.ajax({
+					url:"manage",
+					type:"POST",
+					data:{type:type},
+					success:function(data)
+					{
+						if(data == 1)
+						{
+							alert("办理成功！");
+							window.location.href = "personcard";
+						}
+					},
+					error:function(){alert("error!")}
+				});
+			});
+			
+		});
+	</script>
+{/block}

@@ -1,0 +1,132 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>健身动作</title>
+		<link href="__CSS__/style.css" rel="stylesheet" type="text/css"  media="all" />
+		<script src="__JS__/jquery-3.3.1.js"></script>
+		  <script type="text/javascript">
+			$(document).ready(function() {
+				$(".scroll").click(function(event){		
+					event.preventDefault();
+					$('html,body').animate({scrollTop:$(this.hash).offset().top},1200);
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<!---start-header---->
+		<div class="header" id="top">
+			<div class="wrap">
+			<!---start-logo---->
+			<div class="logo">
+				<a href="interface.html"><img src="__IMAGES__/jianshenLogo.jpg" title="logo" class="pic"/></a>
+			</div>
+			<!---End-logo---->
+			<!---start-top-nav---->
+			<div class="top-nav">
+				<ul>
+					<li ><a href="index">主页</a></li>
+					<li><a href="about">常识</a></li>
+					<li><a href="equipment">器械</a></li>
+					<li class="active"><a href="action">动作</a></li>
+					<li><a href="login">登录</a></li>
+				</ul>
+			</div>
+			<div class="clear"> </div>
+			<!---End-top-nav---->
+		</div>
+		<!---End-header---->
+	</div>
+		<!---start---content----->
+		<div class="wrap">
+		<div class="content">
+			<!---start-gallery---->
+			<div class="gallerys">
+					<div class="gallery-grids">
+						<h3>动作库</h3>
+						<div class="gallery-grid">
+							<h4>屈腕练习</h4>
+							<a href="__IMAGES__/wq.gif"><img src="__IMAGES__/wq.gif" alt=""></a>
+						</div>
+						
+						<div class="gallery-grid">
+							<h4>背蹲</h4>	
+							<a href="__IMAGES__/bd.gif"><img src="__IMAGES__/bd.gif" alt=""></a>	
+						</div>
+						
+						<div class="gallery-grid">
+							<h4>前屈臂</h4>
+							<a href="__IMAGES__/qqb.gif"><img src="__IMAGES__/qqb.gif" alt=""></a>
+						</div>
+						
+						<div class="gallery-grid">
+							<h4>坐位下拉</h4>	
+							<a href="__IMAGES__/zwxl.gif"><img src="__IMAGES__/zwxl.gif" alt=""></a>
+						</div>				
+						<!--<div class="clear"> </div>-->
+					</div>
+					<div class="clear"> </div>
+					<div class="gallery-grids">
+						<div class="gallery-grid">
+							<h4>硬拉</h4>	
+							<a href="__IMAGES__/yl.gif"><img src="__IMAGES__/yl.gif" alt=""></a>		
+						</div>
+						<div class="gallery-grid">
+							<h4>正握引体向上</h4>
+							<a href="__IMAGES__/yt.gif"><img src="__IMAGES__/yt.gif" alt=""></a>				
+						</div>
+						<div class="gallery-grid">
+							<h4>俯身提拉</h4>
+							<a href="__IMAGES__/fstl.gif"><img src="__IMAGES__/fstl.gif" alt=""></a>	
+						</div>
+						<div class="gallery-grid">
+							<h4>肱二头肌弯举</h4>
+							<a href="__IMAGES__/p1.gif"><img src="__IMAGES__/p1.gif" alt=""></a>
+						</div>
+					</div>
+					
+					<div class="clear"> </div>
+					<div class="gallery-grids">
+						<div class="gallery-grid">
+							<h4>直臂屈伸</h4>	
+							<a href="__IMAGES__/zbqs.gif"><img src="__IMAGES__/zbqs.gif" alt=""></a>				
+						</div>
+						<div class="gallery-grid">
+							<h4>卧推</h4>
+							<a href="__IMAGES__/wt.gif"><img src="__IMAGES__/wt.gif" alt=""></a>
+						</div>
+						<div class="gallery-grid">
+							<h4>哑铃锻炼斜方肌</h4>
+							<a href="__IMAGES__/p2.gif"><img src="__IMAGES__/p2.gif" alt=""></a>
+						</div>
+						<div class="gallery-grid">
+							<h4>哑铃坐姿上举</h4>
+							<a href="__IMAGES__/szzj.gif"><img src="__IMAGES__/szzj.gif" alt=""></a>
+						</div>
+					</div>
+					
+					
+					<script type="text/javascript" src="js/jquery.lightbox.js"></script>
+				    <link rel="stylesheet" type="text/css" href="__CSS__/lightbox.css" media="screen">
+				  	<script type="text/javascript">
+				    $(function() {
+				        $('.gallery-grid a').lightBox();
+				    });
+				    </script>
+				    <div class="clear"> </div>
+				    <div class="projects-bottom-paination">
+						<div class="gallery-button"><a href="https://www.hiyd.com/dongzuo/?equipment=8">Read More</a></div>
+					</div>
+				</div>
+			<!---End-gallery---->
+		</div>
+		</div>	
+	<div class="clear"> </div>
+	<div class="top-link">
+		<a href="#top" class="scroll">Click to Top</a>
+	</div>
+	<!---End-wrap---->
+	</body>
+</html>
+

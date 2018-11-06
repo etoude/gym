@@ -1,0 +1,92 @@
+//修改个人信息
+{extend name="common/memberbase"}
+
+{block name="link"}
+	<link rel="stylesheet" type="text/css" href="__CSS__/personchange.css">
+	<script>
+		window.onload=function()
+			{
+				$(".name").val('{$name}');
+				$(".birth").val('{$birth}');
+				var sex = '{$sex}';
+				if(sex == '男')
+					$(".boy").prop("checked",true);
+				else
+					$(".girl").prop("checked",true);
+			};
+	</script>
+	
+	<script type="text/javascript">
+		$(document).ready(function(){
+			
+//			var id = {$Think.session.id};		
+			$('#change').click(function()
+			{
+				var name = $('.name').val();
+				var sex = $('input[name="sex"]:checked').val();
+				var birth = $('.birth').val();
+				
+				$.ajax({
+					url:"changeinfor",
+					type:"POST",
+					data:{name:name,sex:sex,birth:birth},
+//					async:false,
+					success:function(data)
+					{
+						if(data == 1)
+							alert('修改成功！');
+						else
+							alert('修改有误！');
+					},
+					error:function(){alert('error!')}
+				});
+			});
+			
+			
+			$('#commit').click(function()
+			{
+				var ymess = $('.oripass').val();
+				var xmess = $('.newpass').val();
+				
+				$.ajax({
+					url:"changemess",
+					type:"POST",
+					data:{ymess:ymess,xmess:xmess},
+//					async:false,
+					success:function(data)
+					{
+						if(data == 1)
+						{
+							alert('修改成功！');
+							 $('.oripass').val("");
+							 $('.newpass').val("");
+						}
+						else
+							alert('修改有误！');
+					},
+					error:function(){alert('error!')}
+				});
+			});
+			
+		});	
+	</script>
+{/block}
+
+{block name="content"}
+	<div class="personbg" style="background-image: url(__IMG__/person_bg.jpg);">
+		<div class="form">
+			 <h3>修改信息</h3>
+			 <div><input type="text" class="name" placeholder="用户名"/></div>
+			 <div>
+				<label><input type="radio" name="sex" value="男" class="boy"/>男</label>
+				<label><input type="radio" name="sex" value="女" class="girl"/>女</label>
+			 </div>
+			 <div><input type="date" value="2000-02-12" class="birth"/></div>
+			 <div><button id="change">修改</button></div>
+			 <div><input type="text" placeholder="原密码" class="oripass"/></div>
+			 <div><input type="text" placeholder="新密码" class="newpass"/></div>
+			 <div><button id="commit">修改</button></div>
+		</div>
+	</div>	
+	
+{/block}

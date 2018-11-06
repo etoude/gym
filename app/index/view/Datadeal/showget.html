@@ -1,0 +1,150 @@
+//选中会员
+{extend name='common/adminbase' /}
+{block name="link"}
+	<link rel="stylesheet" type="text/css" href="__CSS__/out.css">
+	<link rel="stylesheet" type="text/css" href="__CSS__/show.css">
+	<link rel="stylesheet" type="text/css" href="__CSS__/dealmember.css">
+{/block}
+
+{block name="content"}
+	<div class="out" style="background-image: url(__IMG__/aback.jpg);">	
+		<div class="in">
+			<table border="3" class="table" style="width:805px;">
+				<tr>
+					<td>会员Id</td>
+					<td>登录账号</td>
+					<td>开始时间</td>
+					<td>到期时间</td>
+					<td>会员卡类型</td>
+					<td>会员积分</td>
+					<td>账户余额</td>
+					<td>操作</td>
+				</tr>
+				
+				{foreach name='mem' item='vo' key='s'}
+					<tr>
+						<td>{$vo.id}</td>
+						<td>{$vo.memberId}</td>
+						<td>{$vo.startTime}</td>
+						<td>{$vo.endTime}</td>
+						<td>{$vo.cardType}</td>
+						<td>{$vo.integral}</td>
+						<td>{$vo.balance}</td>
+						<td>
+							<button class="zhu">删除</button>
+							<button class="bian">编辑</button>
+						</td>
+					</tr>
+				{/foreach}
+			</table>	
+			<div class="bbb">
+				<img src="__IMG__/no.png"  id="back" style="position:relative;left: -100px;"/>
+			</div>
+		</div>
+		
+		<div class="dialog">
+			<div class="show">
+				<div><span class="span">修改会员信息</span>
+					<img src="__IMG__/no.png" style="width:30px;height:30px;" class="img" />
+				</div>
+				<div><input type="text" placeholder="会员ID" class="i0"/></div>
+				<div><input type="text" placeholder="登录账号" class="i1"/></div>
+				<div><input type="date" placeholder="开始时间" class="i2"/><br /></div>
+				<div><input type="date" placeholder="到期时间" class="i3"/></div>
+				<div><input type="text" placeholder="会员卡类型" class="i4"/></div>
+				<div><input type="text" placeholder="会员积分" class="i5"/></div>
+				<div><input type="text" placeholder="账户余额" class="i6"/></div>
+			 	<div><button id="commit">提交</button></div>	
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+	
+		$(function(){
+			$('#back').click(function()
+			{
+				window.location.href = 'membernum';
+			});
+			
+			$(".zhu").click(function(){
+				var id = $(this).parent().parent().find("td").eq(0).html();
+				$.ajax({
+							url:'dealmember',
+							type:'POST',
+							data:{id:id},
+							success:function(data)
+							{
+								if(data==1)
+								{
+									alert('删除成功！');
+									window.location.href = 'membernum';
+								}else{
+									alert("删除出错！！");
+								}
+							},
+							error:function(){alert('error!')}
+						});
+	
+				});
+					
+				$(".bian").click(function(){
+						$(".dialog").css('display','block');
+						$(".table").css('display','none');
+						$(".bbb").css('display','none');
+						var arr=[];					
+						for(var i=0;i<7;i++)
+							arr[i] = $(this).parent().parent().find("td").eq(i).html();
+							
+						for(var i=0;i<7;i++)
+							$(".i"+i).val(arr[i]);							
+				});
+			
+			$("#commit").click(function(){
+					var arr=[];
+					var ishave=true;
+					for(var i=0;i<7;i++)
+					{
+						arr[i] = $(".i"+i).val();
+						if(arr[i]==""||arr[i]==null)
+							ishave = false;
+					}
+					if(ishave)
+					{
+						$.ajax({
+							url:'changemember',
+							type:'POST',
+							data:{
+								id:arr[0],
+								mid:arr[1],
+								st:arr[2],
+								et:arr[3],
+								ct:arr[4],
+								ig:arr[5],
+								ba:arr[6]			
+									},		
+							success:function(result)
+							{
+								if(result == 1)
+								{
+									alert("修改成功！");	
+									window.location.href = 'membernum';
+								}
+							},
+							error:function(){alert('error!')}
+						});
+					}else{
+						alert("输入不能为空！");
+					}
+					
+				});
+				
+				$(".img").click(function()
+				{
+					$(".dialog").css('display','none');
+					$(".table").css('display','block');
+					$(".bbb").css('display','block');
+				});		
+
+		});
+	</script>
+{/block}

@@ -1,0 +1,149 @@
+//获取购物车
+{extend name="common/memberbase"}
+
+{block name="link"}
+	<link rel="stylesheet" type="text/css" href="__CSS__/out.css">
+	<link rel="stylesheet" type="text/css" href="__CSS__/class.css">
+	<link rel="stylesheet" type="text/css" href="__CSS__/shopping.css">
+	<link rel="stylesheet" type="text/css" href="__CSS__/shoppingcar.css">
+{/block}
+
+{block name="content"}
+	<div class="out" style="background-image: url(__IMG__/aback.jpg);">
+		<div class="in1" >
+			<div>
+				<span style="font-size: 20px;">全部商品</span>
+				<hr style="background: red;height:3px;"/>
+			</div>	
+			
+			<div class="second">
+				<div class="sec1">
+					<input type="checkbox" name="all" class="all"/><span>全选</span>
+				</div>
+				<div style="text-align: center;width:600px;">
+					<span style="font-size: 17px;">商品信息</span>
+				</div>
+			</div>
+			
+			<hr style="background:#2411F5;height:3px;"/>
+			<div class="third">
+				{foreach name="car" item="vo" key="s"}
+					<div class="box">
+						<div class="sbox sbox{$s}">
+							<input type="checkbox" name="nbox" class='cho{$s} cho'/>
+						</div>
+						<div>
+							<img src="__UPLOADS__/{$vo.path}" class="pictu"/>
+						</div>
+						<div>
+							<span>{$vo.name}</span>
+						</div>
+						<div class="div1"></div>
+						<div>
+							<span>￥</span><span class="pri{$s}">{$vo.price}</span>
+						</div>
+						<div>
+							<span>数量：</span><input type="text" class="inp{$s} inp" value='{$vo.count}'/>
+						</div>
+					</div>
+				{/foreach}
+			</div>
+			<hr style="background:#2411F5;height:3px;"/>
+			<div class="bottom">
+				<div class="sec2">
+					<input type="checkbox" name="all" class="all"/><span>全选</span>
+				</div>
+				<div class="div"></div>
+				<div>
+					<span>已选商品：<span class="num">0</span>件</span>				
+				</div>
+				<div>
+					<span>总计：<span class="num1">0</span>元</span>
+				</div>
+				<div>
+					<button class="jie">结算</button>
+				</div>
+			</div>
+		</div>	
+	</div>
+	
+	<script type="text/javascript">
+		$(function()
+		{
+			$(".all").click(function()
+			{
+				if($(this).is(':checked')){
+					
+					$('input[name="nbox"]').each(function()
+					{
+						$(this).prop("checked",true);
+					});				
+					var num = $('input[name="nbox"]').length;
+					var jiage = 0;
+					var jian = 0;
+					for(var i=0;i<num;i++)
+					{
+						jian +=parseInt($(".inp"+i).val());				
+						jiage+=parseInt($(".pri"+i).html())*parseInt($(".inp"+i).val());
+					}
+					$(".num").html(jian);
+					$(".num1").html(jiage);
+				}else{
+					
+					$('input[name="nbox"]').each(function()
+					{
+						$(this).prop("checked",false);
+					});
+					$(".num").html(0);
+					$(".num1").html(0);
+				}
+			});
+			
+			
+			$(".cho").click(function(){
+//				alert($(".cho").checked());
+				var jiage = $(this).parent().parent().find('div').eq(4).find('span').eq(1).html();
+				var jian = $(this).parent().parent().find('div').eq(5).find('input').eq(0).val();
+				if($(this).prop('checked'))
+				{
+					var jian1 = parseInt($(".num").html())+parseInt(jian);
+					var jiage1 = parseInt($(".num1").html())+parseInt(jiage)*parseInt(jian);
+					$(".num").html(jian1);
+					$(".num1").html(jiage1);
+				}else{
+					var jian1 = parseInt($(".num").html())-parseInt(jian);
+					var jiage1 = parseInt($(".num1").html())-parseInt(jiage)*parseInt(jian);
+					$(".num").html(jian1);
+					$(".num1").html(jiage1);
+				}
+				
+			});
+			
+			$(".jie").click(function()
+			{
+				var js = confirm("是否结算？");
+				if(js)
+				{
+					var money=$(".num1").html();
+					$.ajax({
+						url:"buysometing",
+						type:"POST",
+						data:{money:money},
+						success:function(data)
+						{
+							if(data == 1)
+							{
+								alert("付款成功！");
+								window.location.href = "scar";
+							}
+							else
+								alert("账户余额不足！");
+						},
+						error:function(){alert("error!")}
+					});
+				}
+			});
+			
+		});
+	</script>
+{/block}

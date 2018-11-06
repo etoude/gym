@@ -1,0 +1,162 @@
+//会员卡类型状态
+{extend name='common/adminbase' /}
+{block name="link"}
+	<link rel="stylesheet" type="text/css" href="__CSS__/out.css">
+	<link rel="stylesheet" type="text/css" href="__CSS__/dealmember.css">
+	<link rel="stylesheet" type="text/css" href="__CSS__/type.css">
+{/block}
+
+{block name="content"}
+	<div class="out" style="background-image: url(__IMG__/aback.jpg);">
+		<div class="init">
+			<div class="top1">
+				<input type="text" placeholder="会员卡类型" class="t1"/>
+				<input type="text" placeholder="会员卡价格" class="t2"/>
+				<button class="add">添加</button>
+			</div>
+			<div class="bottom">
+				<input type="text" placeholder="会员卡类型" class="bo0"/>
+				<input type="text" placeholder="会员卡价格" class="bo1"/>
+				<button class="change">修改</button>
+				<img src="__IMG__/no.png" class="img"/>
+			</div>
+			<div>
+				<table border="3" class="table layui-table">
+					<thead>
+						<tr>
+							<td>会员卡类型</td>
+							<td>办卡价格</td>
+							<td>操作</td>
+						</tr>
+					</thead>
+					
+					<tbody>
+						{volist name='card' id='car' key='s'}
+							<tr>
+								<td>{$car.type}</td>
+								<td>{$car.price}</td>
+								<td>
+									<button class="b{$s+1} zhu">删除</button>
+									<button class="r{$s+1} bian">编辑</button>
+								</td>
+							</tr>
+						{/volist}
+					</tbody>					
+				</table>			
+			</div>
+			
+		</div>	
+	</div>
+	
+	<script type="text/javascript">
+		$(function()
+		{
+			$(".add").click(function()
+			{
+				var type = $(".t1").val();
+				var price = $(".t2").val();
+				
+				if(type==""||type==null||price==""||price==null)
+				{
+					alert("输入不能为空!");
+					return;
+				}else{
+					$.ajax({
+						type:"post",
+						url:"addtype",
+						async:true,
+						data:{type:type,price:price},
+						success:function(data)
+						{
+							if(data)
+							{
+								alert("添加成功！");
+								window.location.href = 'cardtype';
+							}else{
+								alert("已存在该类型会员卡！");
+							}
+						},
+						error:function(){alert("error!")}
+					});
+				}				
+			});
+			
+			$(".zhu").click(function(){
+				//获取记录条数
+				var num = $('.table tr').length;
+				for(var a=2;a<=num;a++)
+				{
+					if($(this).is(".b"+a))
+					{
+						var type = $(this).parent().parent().find("td").eq(0).html();
+						$.ajax({
+							url:'dealtype',
+							type:'POST',
+							data:{type:type},
+							success:function(data)
+							{
+								if(data==1)
+								{
+									alert('删除成功！');
+									window.location.href = 'cardtype';
+								}else{
+									alert("删除出错！！");
+								}
+							},
+							error:function(){alert('error!')}
+						});
+					}
+				}
+			});
+			
+			$(".bian").click(function(){
+				//获取记录条数
+				var num = $('.table tr').length;
+				for(var a=2;a<=num;a++)
+				{
+					if($(this).is(".r"+a))
+					{	
+						$(".bottom").css('display','block');
+						var arr=[];					
+						for(var i=0;i<2;i++)
+							arr[i] = $(this).parent().parent().find("td").eq(i).html();
+						
+						for(var i=0;i<2;i++)
+							$(".bo"+i).val(arr[i]);							
+					}
+				}
+			});
+			
+			
+			$(".change").click(function()
+			{
+				var type = $(".bo0").val();
+				var price = $(".bo1").val();
+				$.ajax({
+					type:"post",
+					url:"updatetype",
+					async:true,
+					data:{type:type,price:price},
+					success:function(data)
+					{
+						if(data==1)
+						{
+							alert('修改成功！');
+							window.location.href = 'cardtype';
+						}else{
+							alert("修改出错！！");
+						}
+					},
+					error:function(){alert('error!')}
+				});
+			});
+			
+			
+			$(".img").click(function()
+			{
+				$(".bottom").css('display','none');
+			});
+		});
+		
+	</script>
+{/block}

@@ -1,0 +1,82 @@
+//修改管理员信息
+{extend name='common/adminbase' /}
+{block name="link"}
+	<link rel="stylesheet" type="text/css" href="__CSS__/personchange.css">
+	<link rel="stylesheet" type="text/css" href="__CSS__/out.css">
+	
+	<script>
+		window.onload=function()
+			{
+				$(".name").val('{$name}');
+				$(".phone").val('{$phone}');
+			};
+	</script>
+	
+	<script type="text/javascript">
+		$(document).ready(function(){
+			
+//			var id = {$Think.session.id};		
+			$('#change').click(function()
+			{
+				var name = $('.name').val();
+				var phone = $('.phone').val();
+				
+				$.ajax({
+					url:"changeinfor",
+					type:"POST",
+					data:{name:name,phone:phone},
+//					async:false,
+					success:function(data)
+					{
+						if(data == 1)
+							alert('修改成功！');
+						else
+							alert('修改有误！');
+					},
+					error:function(){alert('error!')}
+				});
+			});
+			
+			
+			$('#commit').click(function()
+			{
+				var ymess = $('.oripass').val();
+				var xmess = $('.newpass').val();
+				
+				$.ajax({
+					url:"changemess",
+					type:"POST",
+					data:{ymess:ymess,xmess:xmess},
+//					async:false,
+					success:function(data)
+					{
+						if(data == 1)
+						{
+							alert('修改成功！');
+							 $('.oripass').val("");
+							 $('.newpass').val("");
+						}
+						else
+							alert('修改有误！');
+					},
+					error:function(){alert('error!')}
+				});
+			});
+			
+		});	
+	</script>
+{/block}
+
+{block name="content"}
+	<div class="out" style="background-image: url(__IMG__/aback.jpg);">	
+		<div class="form">
+			 <h3>修改信息</h3>
+			 <div><input type="text" class="name" placeholder="管理员名"/></div>
+			  <div><input type="text" class="phone" placeholder="管理员电话"/></div>
+			 <div><button id="change">修改</button></div>
+			 <div><input type="text" placeholder="原密码" class="oripass"/></div>
+			 <div><input type="text" placeholder="新密码" class="newpass"/></div>
+			 <div><button id="commit">修改</button></div>
+		</div>
+	</div>
+{/block}

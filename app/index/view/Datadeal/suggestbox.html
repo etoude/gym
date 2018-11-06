@@ -1,0 +1,35 @@
+//反馈箱
+{extend name="common/adminbase"}
+
+{block name="link"}
+	<link rel="stylesheet" type="text/css" href="__CSS__/out.css"/>
+	<link rel="stylesheet" type="text/css" href="__CSS__/class.css">
+	<link rel="stylesheet" type="text/css" href="__CSS__/suggestbox.css">
+
+{/block}
+
+{block name="content"}
+	<div class="out" style="background-image: url(__IMG__/aback.jpg);">
+		<div class="in">
+			{volist name='sug' id='suggest' key='s'}
+				<div class="layui-card box">
+<!--				 	<div class="layui-card-header"></div>-->
+				  	<div class="layui-card-body">
+				   	{$s}.<span>{$suggest.content}</span><br/>
+				   	<span>提交时间：{$suggest.time}</span>&nbsp;&nbsp;
+				   	<span>联系方式：{$suggest.connect}</span>
+				 	 </div>
+				</div>
+			{/volist}
+		</div>
+		<div class="setpage" style="margin-top:65px;">{$page}</div>
+	</div>
+	
+	<script type="text/javascript">
+		$(function()
+		{
+			$(".pagination").attr("id","pagination-digg");
+			$(".disabled span").html("");		
+		});
+	</script>
+{/block}

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>健身房管理系统管理端</title>
+  <link rel="stylesheet" href="__LAYUI__/css/layui.css">
+  <script src="__JS__/jquery-3.3.1.js"></script>
+  {block name="link"}
+  		 <link rel="stylesheet" type="text/css" href="__CSS__/lunbo.css">
+  {/block}
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+  <div class="layui-header">
+    <div class="layui-logo">健身房管理信息系统</div>
+    <!-- 头部区域（可配合layui已有的水平导航） -->
+    <ul class="layui-nav layui-layout-left">
+      <li class="layui-nav-item"><a href="admin">主页</a></li>
+      <li class="layui-nav-item"><a href="suggestbox">反馈箱</a></li>
+      <!--<li class="layui-nav-item"><a href="javascript:;">备忘录</a></li>-->
+    </ul>
+    <ul class="layui-nav layui-layout-right">
+      <li class="layui-nav-item">
+        <a href="javascript:;">
+          	{$Think.session.name}
+        </a>
+        <!--<dl class="layui-nav-child">
+          <dd><a href="">基本资料</a></dd>
+          <dd><a href="">安全设置</a></dd>
+        </dl>-->
+      </li>
+      <li class="layui-nav-item"><a href="login">注销</a></li>
+    </ul>
+  </div>
+  
+  <div class="layui-side layui-bg-black">
+    <div class="layui-side-scroll">
+      <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+      <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+      	
+	        <li class="layui-nav-item">
+	          <a class="" href="javascript:;">管理员信息</a>
+	          <dl class="layui-nav-child">
+	          	<dd><a href="adminmess">修改管理员信息</a></dd>
+	          </dl>
+	        </li>
+	        
+	        <li class="layui-nav-item">
+	          <a href="javascript:;">会员管理</a>
+	          <dl class="layui-nav-child">
+	            <dd><a href="membernum" target="myiframe">会员账号管理</a></dd>
+	          </dl>
+	        </li>
+	        
+	        <li class="layui-nav-item">
+	          <a href="javascript:;">教练管理</a>
+	          <dl class="layui-nav-child">
+	            <dd><a href="coachmess" target="myiframe">教练信息管理</a></dd>
+	            <dd><a href="setclass" target="myiframe">教练排课</a></dd>
+	          </dl>
+	        </li>
+	        
+	        <li class="layui-nav-item">
+	          <a href="javascript:;">会员卡类型管理</a>
+	          <dl class="layui-nav-child">
+	            <dd><a href="cardtype" target="myiframe">会员卡设置</a></dd>
+	          </dl>
+	        </li>
+	        
+	        <li class="layui-nav-item">
+	          <a href="javascript:;">衣柜管理</a>
+	          <dl class="layui-nav-child">
+	            <dd><a href="chestset" target="myiframe">衣柜设置管理</a></dd>
+	          </dl>
+	        </li>
+	        
+	        <li class="layui-nav-item">
+	          <a href="javascript:;">商城管理</a>
+	          <dl class="layui-nav-child">
+	            <dd><a href="putaway" target="myiframe">商品上架</a></dd>
+	            <dd><a href="soldout" target="myiframe">商品下架</a></dd>
+	          </dl>
+	        </li>
+	        
+	        <li class="layui-nav-item">
+	          <a href="javascript:;">财务管理</a>
+	          <dl class="layui-nav-child">
+	            <dd><a href="" target="myiframe">财务收入</a></dd>
+	            <dd><a href="" target="myiframe">财务支出</a></dd>
+	          </dl>
+	        </li>
+      </ul>
+    </div>
+  </div>
+  
+  <div class="layui-body">
+    <!-- 内容主体区域 -->
+    <div style="padding: 10px;">
+    	<!--<iframe src="https://www.hupu.com" frameborder="0" name="myiframe" style="width: 100%;height:500px;"></iframe>--> 
+    	{block name="content"}
+    		<div class="content">
+				<div class="a-content">
+					<div class="carousel-content">
+						<ul class="carousel">
+							<li><img src="__IMAGES__/about1.jpg"></li>
+							<li><img src="__IMAGES__/qx4.jpg"></li>
+							<li><img src="__IMAGES__/qx3.jpg"></li>
+							<li><img src="__IMAGES__/qx2.jpg"></li>
+							<li><img src="__IMAGES__/qx1.jpg"></li>
+						</ul>
+						<ul class="img-index"></ul>
+						<div class="carousel-prev"><img src="__IMAGES__/left1.png"></div>
+						<div class="carousel-next"><img src="__IMAGES__/right1.png"></div>
+					</div>
+				</div>
+			</div>
+			<script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+			<script type="text/javascript" src="__JS__/carousel.js"></script>
+			<script type="text/javascript">
+				$(function(){
+					$(".carousel-content").carousel({
+						carousel : ".carousel",//轮播图容器
+						indexContainer : ".img-index",//下标容器
+						prev : ".carousel-prev",//左按钮
+						next : ".carousel-next",//右按钮
+						timing : 3000,//自动播放间隔
+						animateTime : 700,//动画时间
+						autoPlay : true,//是否自动播放 true/false
+						direction : "left",//滚动方向 right/left
+					});
+		
+					$(".carousel-content").hover(function(){
+						$(".carousel-prev,.carousel-next").fadeIn(300);
+					},function(){
+						$(".carousel-prev,.carousel-next").fadeOut(300);
+					});
+		
+					$(".carousel-prev").hover(function(){
+						$(this).find("img").attr("src","__IMAGES__/left2.png");
+					},function(){
+						$(this).find("img").attr("src","__IMAGES__/left1.png");
+					});
+					$(".carousel-next").hover(function(){
+						$(this).find("img").attr("src","__IMAGES__/right2.png");
+					},function(){
+						$(this).find("img").attr("src","__IMAGES__/right1.png");
+					});
+					
+					
+				});
+			</script>
+    	{/block}
+    </div>
+  </div>
+  
+  <div class="layui-footer">
+    <!-- 底部固定区域 -->
+  </div>
+</div>
+<script src="__JS__/jquery.min.js"></script>
+<script src="__LAYUI__/layui.js"></script>
+<script>
+//JavaScript代码区域
+layui.use('element', function(){
+  var element = layui.element; 
+});
+</script>
+</body>
+</html>
+      

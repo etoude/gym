@@ -1,0 +1,137 @@
+//衣柜租退界面
+{extend name="common/memberbase" /}
+
+{block name="link"}
+	<link rel="stylesheet" type="text/css" href="__CSS__/chest.css">
+	<link rel="stylesheet" type="text/css" href="__CSS__/class.css">
+	<script type="text/javascript">
+		$(document).ready(function()
+		{
+			$(".pagination").attr("id","pagination-digg");
+			$(".disabled span").html("");
+			
+			$(".zhu").click(function(){
+				//获取记录条数
+				var num = $('.table tr').length;
+				for(var a=2;a<=num;a++)
+				{
+					if($(this).is(".b"+a))
+					{
+//						var status = $('#s'+a).html();
+						var status = $(this).parent().parent().find("td").eq(1).html();
+						var id = $(this).parent().parent().find("td").eq(0).html();
+						if(status == "已租")
+						{
+							alert("该衣柜已租出，租赁失败！");
+							break;
+						}else{
+							$.ajax({
+								url:'setstatus',
+								type:'POST',
+								data:{id:id},
+								success:function(data)
+								{
+									if(data==1)
+									{
+
+										//$('#s'+a).html("已租");
+										alert('租赁成功！');
+										window.location.href = 'usechest';
+									}else{
+										alert("请查看账户余额是否充足或是否有在租衣柜！");
+									}
+								},
+								error:function(){alert('error!')}
+							});
+						}
+					}
+				}
+			});
+			
+			$("#rent").click(function(){
+					$(".table").css('display','none');
+					$(".top2").css('display','block');
+					$("#seek").css('display','inline-block');
+				});
+				
+			$("#seek").click(function(){
+					$(".table").css('display','block');
+					$(".top2").css('display','none');
+					$("#seek").css('display','none');
+			});
+				
+			$("#tui").click(function(){
+				var id = $('.num').html();
+				$.ajax({
+					url:'backrent',
+					type:'POST',
+					data:{id:id},
+					success:function(data)
+					{
+						if(data == 1)
+						{
+							alert('成功退租！');
+							window.location.href = 'usechest';
+						}
+					}
+				});
+			});
+		});
+	</script>
+{/block}
+
+{block name="content"}
+	<div class="out" style="background-image: url(__IMG__/qckj.jpg);">
+		<div class="inner">
+			<div class="top">
+				<button id="rent">查看已租</button>
+				<button id="seek">收起已租</button>
+			</div>
+			<table class="top2" border="3">
+				<tr>
+					<td>租赁编号</td>
+					<td>操作</td>
+				</tr>
+				{foreach name='rent' item='vo'}
+					<tr>
+						<td class="num">{$vo.chestId}</td>
+						<td>
+							<button id="tui">退租</button>
+						</td>
+					</tr>
+				{/foreach}
+			</table>
+			
+			<table border="3" class="table">
+				<tr>
+					<td>衣柜编号</td>
+					<td>衣柜状态</td>
+					<td>元/次</td>
+					<td>操作</td>
+				</tr>
+				<!--{foreach name='chest' item='vo' key='s'}
+					<tr>
+						<td>{$vo.id}</td>
+						<td id="s{$s+1}">{$vo.status}</td>
+						<td>{$vo.prices}</td>
+						<td>
+							<button class="b{$s+1} zhu">租赁</button>
+						</td>
+					</tr>
+				{/foreach}-->
+				
+				{volist name='chest' id='che' key='s'}
+				   <tr>
+						<td>{$che.id}</td>
+						<td>{$che.status}</td>
+						<td>{$che.prices}</td>
+						<td>
+							<button class="b{$s+1} zhu">租赁</button>
+						</td>
+					</tr>
+				{/volist}
+		    </table>
+		    <div class="setpage" style="margin-top:65px;">{$page}</div>
+		</div>
+	</div>
+{/block}

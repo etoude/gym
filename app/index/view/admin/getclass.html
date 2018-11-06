@@ -1,0 +1,72 @@
+//选课
+{extend name="common/memberbase"}
+
+{block name="link"}
+	<link rel="stylesheet" type="text/css" href="__CSS__/chest.css">
+	<link rel="stylesheet" type="text/css" href="__CSS__/class.css">
+{/block}
+
+{block name="content"}
+	<div class="out" style="background-image: url(__IMG__/54adult.jpg);">
+		<div class="inner">	
+			<table border="3" class="table">
+				<tr>
+					<td>训练部位</td>
+					<td>元/次</td>
+					<td>训练时间</td>
+					<td>教练</td>
+					<td>操作</td>
+				</tr>
+				
+				{volist name='class' id='train' key='s'}
+				   <tr>
+						<td class="t{$s+1}">{$train.trainType}</td>
+						<td>{$train.price}</td>
+						<td>{$train.startTime}到{$train.endTime}</td>
+						<td>{$train.coach}</td>
+						<td>
+							<button class="b{$s+1} zhu">选课</button>
+						</td>
+					</tr>
+				{/volist}
+				
+		    </table>
+			<div class="setpage">{$page}</div>
+		</div>
+		
+	</div>	
+	<script type="text/javascript">
+		$(function(){
+			$(".pagination").attr("id","pagination-digg");
+			$(".disabled span").html("");
+			
+			$(".zhu").click(function(){
+				//获取记录条数
+				var num = $('.table tr').length;
+				for(var a=1;a<num;a++)
+				{
+					if($(this).is(".b"+a))
+					{
+						var ctype = $('.t'+a).html();
+						$.ajax({
+							url:'setclass',
+							type:'POST',
+							data:{ctype:ctype},
+							success:function(data)
+							{
+								if(data==1)
+								{
+									alert('选课成功！');
+//									window.location.href = 'getclass';
+								}else{
+									alert("您已选过该课或账户余额不足！");
+								}
+							},
+							error:function(){alert('error!')}
+						});
+					}
+				}
+			});
+		});
+	</script>
+{/block}

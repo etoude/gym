@@ -1,0 +1,44 @@
+//消费记录
+{extend name="common/memberbase"}
+
+{block name="link"}
+	<link rel="stylesheet" type="text/css" href="__CSS__/chest.css">
+	<link rel="stylesheet" type="text/css" href="__CSS__/class.css">
+{/block}
+
+{block name="content"}
+	<div class="out" style="background-image: url(__IMG__/54adult.jpg);">
+		<div class="inner">	
+			<table border="3" class="table layui-table">
+				<thead>
+					<tr>
+						<td>消费方向</td>
+						<td>消费日期</td>
+						<td>消费金额</td>
+						<td>获得积分</td>
+					</tr>
+				</thead>
+				
+				<tbody>
+					{volist name='comsume' id='comsume' key='s'}
+					   <tr>
+							<td>{$comsume.direc}</td>
+							<td>{$comsume.comtime}</td>
+							<td>{$comsume.money}</td>
+							<td>{$comsume.integral}</td>
+						</tr>
+					{/volist}
+				</tbody>
+							
+		    </table>
+			<div class="setpage">{$page}</div>
+		</div>
+		
+	</div>	
+	<script type="text/javascript">
+		$(function(){
+			$(".pagination").attr("id","pagination-digg");
+			$(".disabled span").html("");
+		});	
+	</script>
+{/block}

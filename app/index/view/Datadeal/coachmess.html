@@ -1,0 +1,232 @@
+//会员账号管理
+{extend name="common/adminbase" /}
+{block name="link"}
+	<link rel="stylesheet" type="text/css" href="__CSS__/dealmember.css">
+	<link rel="stylesheet" type="text/css" href="__CSS__/class.css">
+	<link rel="stylesheet" type="text/css" href="__CSS__/out.css">
+{/block}
+
+{block name="content"}
+	<div class="out" style="background-image: url(__IMG__/aback.jpg);">	
+		<div class="inner">
+			<div class="top" style="position: relative;top:-20px;">
+				<button class="addm">添加教练</button>
+				<input type="text" class="seekit" placeholder="请输入教练ID"/>
+				<button class="findit">查询</button>
+			</div>
+			<table border="3" class="table layui-table" style="width:700px;">
+				<thead>
+					<tr>
+						<td>管理员Id</td>
+						<td>姓名</td>
+						<td>手机号</td>
+						<td>性别</td>
+						<td>年龄</td>
+						<td>工资</td>
+						<td>操作</td>
+					</tr>
+				</thead>
+				
+				<tbody>
+					{volist name='coach' id='coachId' key='s'}
+					   <tr>
+							<td>{$coachId.id}</td>
+							<td>{$coachId.name}</td>
+							<td>{$coachId.phone}</td>
+							<td>{$coachId.sex}</td>
+							<td>{$coachId.age}</td>
+							<td>{$coachId.pay}</td>
+							<td>
+								<button class="b{$s+1} zhu">删除</button>
+								<button class="r{$s+1} bian">编辑</button>
+							</td>
+						</tr>
+					{/volist}
+				</tbody>			
+		   </table>		    
+			<div class="setpage" style="margin-top:25px;">{$page}</div>
+			
+			<div class="dialog">
+				<div class="show">
+					<div><span class="span">修改教练信息</span>
+						<img src="__IMG__/no.png" style="width:30px;height:30px;" class="img" />
+					</div>
+					<div><input type="text" placeholder="教练ID" class="i0"/></div>
+					<div><input type="text" placeholder="姓名" class="i1"/></div>
+					<div><input type="text" placeholder="手机号" class="i2"/><br /></div>
+					<div><input type="text" placeholder="性别" class="i3"/></div>
+					<div><input type="text" placeholder="年龄" class="i4"/></div>
+					<div><input type="text" placeholder="月工资" class="i5"/></div>
+			 		<div><button id="commit">提交</button></div>	
+				</div>
+			</div>
+			
+			<div class="dialog1">
+				<div class="show1">
+					<div><span class="span">添加教练信息</span>
+						<img src="__IMG__/no.png" style="width:30px;height:30px;" class="img1" />
+					</div>
+					<div><input type="text" placeholder="教练ID" class="c0"/></div>
+					<div><input type="text" placeholder="姓名" class="c1"/></div>
+					<div><input type="text" placeholder="手机号" class="c2"/><br /></div>
+					<div><input type="text" placeholder="性别" class="c3"/></div>
+					<div><input type="text" placeholder="年龄" class="c4"/></div>
+					<div><input type="text" placeholder="月工资" class="c5"/></div>
+			 		<div><button id="commit1">提交</button></div>	
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<script type="text/javascript">
+		$(function(){
+			$(".pagination").attr("id","pagination-digg");
+			$(".disabled span").html("");
+			
+			$(".findit").click(function(){
+				var val = $(".seekit").val();
+				if(val==null||val=="")
+				{
+					alert("输入不能为空！");
+				}else{
+					window.location.href = 'getCoach?id='+val;
+				}				
+			});
+			
+			$(".zhu").click(function(){
+				//获取记录条数
+				var num = $('.table tr').length;
+				for(var a=2;a<=num;a++)
+				{
+					if($(this).is(".b"+a))
+					{
+						var id = $(this).parent().parent().find("td").eq(0).html();
+						$.ajax({
+							url:'dealcoach',
+							type:'POST',
+							data:{id:id},
+							success:function(data)
+							{
+								if(data==1)
+								{
+									alert('删除成功！');
+									window.location.href = 'coachmess';
+								}else{
+									alert("删除出错！！");
+								}
+							},
+							error:function(){alert('error!')}
+						});
+					}
+				}
+			});
+				
+			$(".bian").click(function(){
+				//获取记录条数
+				var num = $('.table tr').length;
+				for(var a=2;a<=num;a++)
+				{
+					if($(this).is(".r"+a))
+					{	
+						$(".dialog").css('display','block');
+						$(".table").css('display','none');
+						$(".setpage").css('display','none');
+						$(".top").css('display','none');
+						var arr=[];					
+						for(var i=0;i<6;i++)
+							arr[i] = $(this).parent().parent().find("td").eq(i).html();
+						
+						for(var i=0;i<6;i++)
+							$(".i"+i).val(arr[i]);							
+					}
+				}
+			});
+			
+			$("#commit").click(function(){
+				
+				var arr=[];
+				for(var i=0;i<6;i++)
+					arr[i] = $(".i"+i).val();
+				$.ajax({
+					url:'changecoach',
+					type:'POST',
+					data:{
+						id:arr[0],
+						name:arr[1],
+						phone:arr[2],
+						sex:arr[3],
+						age:arr[4],
+						pay:arr[5]		
+							},		
+					success:function(result)
+					{
+						if(result == 1)
+						{
+							alert("修改成功！");	
+							window.location.href = 'coachmess';
+						}
+					},
+					error:function(){alert('error!')}
+				});
+
+			});
+			
+			$(".img").click(function()
+			{
+				$(".dialog").css('display','none');
+				$(".table").css('display','block');
+				$(".setpage").css('display','block');
+				$(".top").css('display','block');
+			});
+			
+			$(".img1").click(function()
+			{
+				$(".dialog1").css('display','none');
+				$(".table").css('display','block');
+				$(".setpage").css('display','block');
+				$(".top").css('display','block');
+			});
+			
+			$(".addm").click(function(){	
+				$(".dialog1").css('display','block');
+				$(".table").css('display','none');
+				$(".setpage").css('display','none');
+				$(".top").css('display','none');
+			});
+			
+			
+			$("#commit1").click(function(){
+				
+				var arr=[];
+				for(var i=0;i<6;i++)
+					arr[i] = $(".c"+i).val();
+				$.ajax({
+					url:'setCoach',
+					type:'POST',
+					data:{
+						id:arr[0],
+						name:arr[1],
+						phone:arr[2],
+						sex:arr[3],
+						age:arr[4],
+						pay:arr[5]				
+							},		
+					success:function(result)
+					{
+						if(result == 1)
+						{
+							alert("添加成功！");	
+							window.location.href = 'coachmess';
+						}else{
+							alert("id重复，请重新输入！");
+						}
+					},
+					error:function(){alert('error!')}
+				});
+
+			});
+			
+			
+		});
+	</script>	
+{/block}

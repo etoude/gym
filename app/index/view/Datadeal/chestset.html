@@ -1,0 +1,122 @@
+//衣柜管理
+{extend name="common/adminbase" /}
+{block name="link"}
+	<link rel="stylesheet" type="text/css" href="__CSS__/class.css">
+	<link rel="stylesheet" type="text/css" href="__CSS__/chest.css">
+	<link rel="stylesheet" type="text/css" href="__CSS__/out.css">
+	<link rel="stylesheet" type="text/css" href="__CSS__/chestmanage.css">
+{/block}
+
+{block name="content"}
+	<div class="out" style="background-image: url(__IMG__/aback.jpg);">	
+		<div class="inner">
+			<div class="setget">
+				<button class="setnum">设置衣柜数</button>
+				<input type="text" class="num" placeholder="输入衣柜总数"/>
+				<button class="send">提交</button>
+				<img src="__IMG__/no.png" class="img"/>
+			</div>
+			<table border="3" class="table">
+				<tr>
+					<td>衣柜编号</td>
+					<td>衣柜状态</td>
+					<td>元/次</td>
+					<td>操作</td>
+				</tr>
+				
+				{volist name='chest' id='che' key='s'}
+				   <tr>
+						<td>{$che.id}</td>
+						<td>{$che.status}</td>
+						<td><input type="text" value='{$che.prices}' /></td>
+						<td>
+							<button class="b{$s+1} zhu">修改</button>
+						</td>
+					</tr>
+				{/volist}
+		    </table>
+		</div>
+		<div class="setpage" style="margin-top:65px;">{$page}</div>
+	</div>
+	
+	<script type="text/javascript">
+		$(function()
+		{
+			$(".pagination").attr("id","pagination-digg");
+			$(".disabled span").html("");
+			
+			$(".zhu").click(function()
+			{
+				//获取记录条数
+				var num = $('.table tr').length;
+				for(var a=2;a<=num;a++)
+				{
+					if($(this).is(".b"+a))
+					{
+						var id = $(this).parent().parent().find("td").eq(0).html();
+						var price = $(this).parent().parent().find("td").eq(2).find("input").eq(0).val();
+
+						$.ajax({
+							url:'updateprice',
+							type:'POST',
+							data:{id:id,price:price},
+							success:function(data)
+							{
+								if(data == 1)
+								{
+									alert('修改成功！');
+									window.location.href = 'chestset';
+								}
+							},
+							error:function(){alert('error!')}
+						});
+					}
+				}
+			});
+			
+			
+			$(".setnum").click(function()
+			{
+				$(".num").css('display','inline-block');
+				$(".send").css('display','inline-block');
+				$(".img").css('display','inline-block');
+				$(".setnum").css('display','none');
+			});
+			
+			$(".img").click(function()
+			{
+				$(".num").css('display','none');
+				$(".send").css('display','none');
+				$(".img").css('display','none');
+				$(".setnum").css('display','inline-block');
+			});
+			
+			$(".send").click(function()
+			{
+				var num = $(".num").val();
+				if(num == ""||num == null)
+				{
+					alert("请输入衣柜总数！");
+				}else{
+					$.ajax({
+						url:"setchestnum",
+						type:"POST",
+						data:{num:num},
+						success:function(data)
+						{
+							if(data == 1)
+							{
+								alert("设置成功！");
+								window.location.href = "chestset";
+							}else
+							{
+								alert("设置失败！");
+							}
+						},
+						error:function(){alert('error!')}
+					});
+				}
+			});
+		});
+	</script>
+{/block}
